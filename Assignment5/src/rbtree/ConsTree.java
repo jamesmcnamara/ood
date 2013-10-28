@@ -171,11 +171,11 @@ public class ConsTree extends BT{
         int compare = myCompare.compare(myString, s);
         if (compare < 0) {
             return new ConsTree(myString, myLeft, 
-                    myRight.add(s, myCompare).balance(), red);
+                    myRight.add(s, myCompare), red).balance();
         }
         else if (compare > 0) {
             return new ConsTree(myString, 
-                    myLeft.add(s, myCompare).balance(), myRight, red); 
+                    myLeft.add(s, myCompare), myRight, red).balance(); 
         }
         else {
             return this;
@@ -201,8 +201,11 @@ public class ConsTree extends BT{
         }
     }
     
-    BT balance() {
-        if (!red && this.myLeft.hasAdjacentReds()) {
+    /**
+     * Balance Method
+     */
+    protected BT balance() {
+        if (!red && myLeft.isRedAndHasAdjacentReds()) {
             if (this.myLeft.getLeft().red) {
                 BT newLeft = myLeft.getLeft().invertColor();
                 BT newRight = new ConsTree(myString, myLeft.getRight(),
@@ -225,7 +228,7 @@ public class ConsTree extends BT{
                         true);
             }
         }
-        else if (!red && this.myRight.hasAdjacentReds()) {
+        else if (!red && myRight.isRedAndHasAdjacentReds()) {
             if (this.myRight.getLeft().red) {
                 BT newLeft = new ConsTree (myString, myLeft,
                         myRight.getLeft().getLeft(),
@@ -255,33 +258,34 @@ public class ConsTree extends BT{
         
     }
     
-    boolean hasAdjacentReds() {
+    protected boolean isRedAndHasAdjacentReds() {
         return this.red && (this.myLeft.red || this.myRight.red);
     }
     
-    BT getLeft() {
+    protected BT getLeft() {
         return this.myLeft;
     }
     
-    BT getRight() {
+    protected BT getRight() {
         return this.myRight;
     }
     
-    String getString() {
+    protected String getString() {
         return this.myString;
     }
     
-    BT invertColor() {
+    protected BT invertColor() {
         return new ConsTree(myString, myLeft, myRight, !red);
     }
     
-    public boolean redTest() {
-        if (this.hasAdjacentReds()) {
-            return true;
+    public int redTest() {
+        if (this.isRedAndHasAdjacentReds()) {
+            return 1 + myLeft.redTest() +
+                myRight.redTest();
         }
         else {
-            return myLeft.hasAdjacentReds() &&
-                    myRight.hasAdjacentReds();
+            return myLeft.redTest() +
+                    myRight.redTest();
         }
     }
     
@@ -293,7 +297,7 @@ public class ConsTree extends BT{
                 return left;
             }
             else {
-                return left +1;
+                return left + 1;
             }
         }
         else {
@@ -307,5 +311,13 @@ public class ConsTree extends BT{
             return this.invertColor();
         }
         else return this;
+    }
+    
+    public int count() {
+    	return 1 + myLeft.count() + myRight.count();
+    }
+    
+    public int height() {
+    	return 1 + Math.max(myLeft.height(), myRight.height());
     }
 }
