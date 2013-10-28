@@ -64,12 +64,12 @@ public class BTree implements Iterable<String> {
         if (active > 0) {
             throw new ConcurrentModificationException();
         }
-        Iterator<String> iterator = iter.iterator();
-        while(iterator.hasNext()) {
-            tree = tree.add(iterator.next(), myCompare).makeBlack();
+        for (String s : iter) {
+            tree = tree.add(s, myCompare).makeBlack();
         }
-        
-        
+        System.out.println(tree.redTest());       
+        System.out.println("This tree's count is " + tree.count() + 
+        		"\nThis tree's max height is " + tree.height());
     }
 
 
@@ -96,13 +96,16 @@ public class BTree implements Iterable<String> {
         if (numStrings < 0) {
             build(iter);
         }
-        Iterator<String> iterator = iter.iterator();
-        int i = 0;
-        while(iterator.hasNext() && i < numStrings) {
-            tree = tree.add(iterator.next(), myCompare).makeBlack();
-            i = i + 1;
+        else {
+        	Iterator<String> iterator = iter.iterator();
+        	int i = 0;
+            while(iterator.hasNext() && i < numStrings) {
+                tree = tree.add(iterator.next(), myCompare).makeBlack();
+                i = i + 1;
+            }
+            System.out.println("This tree's count is " + tree.count() + 
+            		"\nThis tree's max height is " + tree.height());
         }
-        System.out.println(tree.redTest());
     }
 
     /**
