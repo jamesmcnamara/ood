@@ -124,27 +124,27 @@ public class EmptyTree extends BT{
         return false;
     }
     
-    BT balance() {
+    protected BT balance() {
         return EmptyTree.getInstance();
     }
     
-    boolean hasAdjacentReds() {
+    protected boolean isRedAndHasAdjacentReds() {
         return false;
     }
     
-    BT getLeft() {
+    protected BT getLeft() {
         throw new RuntimeException("Empty Tree has no left");
     }
     
-    BT getRight() {
+    protected BT getRight() {
         throw new RuntimeException("Empty Tree has no right");
     }
     
-    String getString() {
+    protected String getString() {
         throw new RuntimeException("Empty Tree has no String");
     }
     
-    BT invertColor() {
+    protected BT invertColor() {
         throw new RuntimeException("All Empty Tree's are black");
     }
     
@@ -152,11 +152,19 @@ public class EmptyTree extends BT{
         return 0;
     }
     
-    public boolean redTest() {
-        return false;
+    public int redTest() {
+        return 0;
     }
 
     public BT makeBlack() {
         return invertColor();
+    }
+    
+    public int count() {
+    	return 0;
+    }
+    
+    public int height() {
+    	return 0;
     }
 }
