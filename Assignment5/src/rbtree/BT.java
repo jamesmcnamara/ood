@@ -32,7 +32,7 @@ public abstract class BT{
      * Determines whether this BT is an Empty Tree
      * @return <code>boolean</code>
      */
-    abstract boolean isEmpty();
+    protected abstract boolean isEmpty();
 
     /**
      * Determines if the given string is contained in this tree
@@ -68,21 +68,23 @@ public abstract class BT{
         }
     }
     
-    abstract BT balance();
+    protected abstract BT balance();
     
-    abstract boolean hasAdjacentReds();
+    protected abstract boolean isRedAndHasAdjacentReds();
     
-    abstract BT getLeft();
+    protected abstract BT getLeft();
     
-    abstract BT getRight();
+    protected abstract BT getRight();
     
-    abstract String getString();
+    protected abstract String getString();
     
-    abstract BT invertColor();
+    protected abstract BT invertColor();
     
     public abstract BT makeBlack();
     
     public abstract int blackCount();
-    public abstract boolean redTest();
+    public abstract int redTest();
+    public abstract int count();
+    public abstract int height();
 
 }
