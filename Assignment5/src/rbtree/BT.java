@@ -68,25 +68,103 @@ public abstract class BT{
         }
     }
     
+    /**
+     * Implements the Red-Black paradigm by looking for instances of 
+     * Red-Red families, and running a local refactoring procedure
+     * to produce a more balance BST structure
+     * @return <code>BT</code>
+     */
     protected abstract BT balance();
     
-    protected abstract boolean isRedAndHasAdjacentReds();
+    /**
+     * Determines whether a node is colored red and has a child who is red
+     * @return boolean
+     */
+    protected abstract boolean isRedAndHasRedChild();
     
+    /**
+     * Returns this BT's left subtree
+     * Only ConsTree's have left subtrees so this must be called with care
+     * @return <code>BT</code>
+     */
     protected abstract BT getLeft();
     
+    /**
+     * Returns this BT's right subtree
+     * Only ConsTree's have right subtrees so this must be called with care
+     * @return <code>BT</code>
+     */
     protected abstract BT getRight();
     
+    /**
+     * Returns this BT's left subtree
+     * Only ConsTree's have strings so this must be called with care
+     * @return <code>String</code>
+     */
     protected abstract String getString();
     
+    /**
+     * Returns a new BT that exactly mimics this BT,
+     * save that is has the opposite color
+     * @return <code>BT</code>
+     */
     protected abstract BT invertColor();
     
+    /**
+     * Returns a new BT that exactly mimics this BT,
+     * save that if the Tree was red, it will now be black
+     * @return <code>BT</code>
+     */
     public abstract BT makeBlack();
     
-    public abstract int blackCount();
+    /**
+     * Determines how many Red nodes in this tree have red children
+     * should be 0, used in the repOK
+     * @return <code>int</code>
+     */
     public abstract int redTest();
+    
+    /**
+     * returns the number of strings stored in this BT
+     * @return <code>int</code>
+     */
     public abstract int count();
+    
+    /**
+     * Returns the size of the maximum length path from root to node
+     * @return <code>int</code>
+     */
     public abstract int height();
+    
+    /**
+     * returns the count of black nodes in the path from root to node
+     * with the least number of black nodes
+     * should be exactly equal to max black count
+     * @return <code>int</code>
+     */
     public abstract int maxBlackCount();
+    
+
+    /**
+     * returns the count of black nodes in the path from root to node
+     * with the largest number of black nodes
+     * should be exactly equal to min black count
+     * @return <code>int</code>
+     */
     public abstract int minBlackCount();
+    
+    /**
+     * Determines whether this object is a valid representation of a BT
+     * @return <code>boolean</code>
+     */
+    public abstract boolean repOK();
+    
+    /**
+     * Determines whether every object in the left subtree is less than this node
+     * and every object in the right subtree is greater than this node
+     * @param comp <code>Comparator</code> of <code>String</code>s
+     * @return <code>boolean</code>
+     */
+    public abstract boolean inOrder(Comparator<String> comp);
 
 }

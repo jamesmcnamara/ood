@@ -18,7 +18,7 @@ import rbtree.EmptyTree;
 public class BTree implements Iterable<String> {
 
     /**Comparator for this BTree*/
-    Comparator<String> myCompare;
+    private Comparator<String> myCompare;
 
     /**Counter for the number of iterators currently running*/
     private int active;
@@ -34,6 +34,12 @@ public class BTree implements Iterable<String> {
         myCompare = comp;
         active = 0;
         tree = EmptyTree.getInstance();
+    }
+    
+    public boolean repOK() {
+    	return (this.myCompare instanceof Comparator) &&
+    			(this.tree instanceof BT) &&
+    			(this.tree.repOK());
     }
 
     /**
@@ -200,7 +206,7 @@ public class BTree implements Iterable<String> {
         /**
          * Constructor
          */
-        BTreeGen(){
+        private BTreeGen(){
             incremented = false;
             arList = new ArrayList<String>();
             arList = tree.listRep(arList);
@@ -219,10 +225,11 @@ public class BTree implements Iterable<String> {
          * @return <code>String</code>
          */
         public String next() {
-            //Before you begin iterating, ensure you've incremented
-            //the active iterator count
-            incActive();
             if (hasNext()) {
+            	//Before you begin iterating, ensure you've incremented
+                //the active iterator count
+            	incActive();
+                           	
                 String s = arList.remove(0);
 
                 //If we are now at the end of the iterator, ensure that
@@ -237,8 +244,11 @@ public class BTree implements Iterable<String> {
                 throw new NoSuchElementException();
             }
         }
-        /**
-         * 
+        
+        /** EFFECT:
+         * When this iterator's next method is first successfully invoked,
+         * increment the number of active iterators running on this 
+         * BTree and mark that this Iterator has incremented
          */
         private void incActive() {
             if (!incremented) {

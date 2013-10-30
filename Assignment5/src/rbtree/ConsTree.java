@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 
 /**
- * Concrete implementation of a BT with Values 
+ * Concrete implementation of a Red-Black BST with Values 
  * @author jamcnam
  * @version 2013-10-08
  */
@@ -22,7 +22,7 @@ public class ConsTree extends BT{
     BT myRight;
 
     /**
-     * Currenty Node's value 
+     * Current Node's value 
      */
     String myString;
 
@@ -49,19 +49,6 @@ public class ConsTree extends BT{
         this.red = color;
     }
     
-    /**
-     * Boolean method that can be used in testing to verify that this object
-     * is a legal representation
-     * @return boolean
-     */
-    public boolean repOK() {
-        return this.myLeft instanceof ConsTree ||
-                this.myLeft instanceof EmptyTree &&
-                this.myRight instanceof ConsTree ||
-                this.myRight instanceof EmptyTree &&
-                this.myString instanceof String;
-    }
-
     /**
      * Determines whether this Tree is empty
      * @return <code>boolean</code>
@@ -205,7 +192,7 @@ public class ConsTree extends BT{
      * Balance Method
      */
     protected BT balance() {
-        if (!red && myLeft.isRedAndHasAdjacentReds()) {
+        if (!red && myLeft.isRedAndHasRedChild()) {
             if (this.myLeft.getLeft().red) {
                 BT newLeft = myLeft.getLeft().invertColor();
                 BT newRight = new ConsTree(myString, myLeft.getRight(),
@@ -228,7 +215,7 @@ public class ConsTree extends BT{
                         true);
             }
         }
-        else if (!red && myRight.isRedAndHasAdjacentReds()) {
+        else if (!red && myRight.isRedAndHasRedChild()) {
             if (this.myRight.getLeft().red) {
                 BT newLeft = new ConsTree (myString, myLeft,
                         myRight.getLeft().getLeft(),
@@ -258,7 +245,7 @@ public class ConsTree extends BT{
         
     }
     
-    protected boolean isRedAndHasAdjacentReds() {
+    protected boolean isRedAndHasRedChild() {
         return this.red && (this.myLeft.red || this.myRight.red);
     }
     
@@ -279,30 +266,13 @@ public class ConsTree extends BT{
     }
     
     public int redTest() {
-        if (this.isRedAndHasAdjacentReds()) {
+        if (this.isRedAndHasRedChild()) {
             return 1 + myLeft.redTest() +
                 myRight.redTest();
         }
         else {
             return myLeft.redTest() +
                     myRight.redTest();
-        }
-    }
-    
-    public int blackCount() {
-        int left = myLeft.blackCount();
-        int right = myRight.blackCount();
-        if (left == right) {
-            if (red) {
-                return left;
-            }
-            else {
-                return left + 1;
-            }
-        }
-        else {
-            throw new RuntimeException("One side has" 
-        + " more blacks than the other");
         }
     }
     
@@ -338,4 +308,29 @@ public class ConsTree extends BT{
     		return 1 + Math.min(myLeft.minBlackCount(), myRight.minBlackCount());
     	}
     }
+    
+    /**
+     * Boolean method that can be used in testing to verify that this object
+     * is a legal representation
+     * @return boolean
+     */
+    public boolean repOK() {
+    	return (myLeft instanceof BT) &&
+    			(myRight instanceof BT) &&
+    			(myString instanceof String) &&
+    			(red == true || red == false) &&
+    			(!myLeft.isRedAndHasRedChild()) &&
+    			(!myRight.isRedAndHasRedChild()) &&
+    			(myRight.minBlackCount() == myRight.maxBlackCount()) &&
+    			(myLeft.minBlackCount() == myLeft.maxBlackCount()) &&
+    			(myRight.minBlackCount() == myLeft.maxBlackCount()) &&
+    			myLeft.repOK() && myRight.repOK();
+    }
+    
+    /*
+     *
+    	int compare = comp.compare(myString, myLeft)
+    }
+    */
+    
 }

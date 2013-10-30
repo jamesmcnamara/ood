@@ -33,8 +33,9 @@ public class EmptyTree extends BT{
      * representation of an EmptyTree 
      * @return boolean
      */
-    boolean repOK() {
-        return this instanceof EmptyTree;
+    public boolean repOK() {
+        return this instanceof EmptyTree &&
+        		this.red == false;
     }
 
     /**
@@ -128,7 +129,7 @@ public class EmptyTree extends BT{
         return EmptyTree.getInstance();
     }
     
-    protected boolean isRedAndHasAdjacentReds() {
+    protected boolean isRedAndHasRedChild() {
         return false;
     }
     
@@ -146,10 +147,6 @@ public class EmptyTree extends BT{
     
     protected BT invertColor() {
         throw new RuntimeException("All Empty Tree's are black");
-    }
-    
-    public int blackCount() {
-        return 0;
     }
     
     public int redTest() {
@@ -174,5 +171,12 @@ public class EmptyTree extends BT{
     
     public int minBlackCount() {
     	return 0;
+    }
+    
+    /**
+     *  
+     */
+    public boolean inOrder(Comparator<String> comp) {
+    	return true;
     }
 }
