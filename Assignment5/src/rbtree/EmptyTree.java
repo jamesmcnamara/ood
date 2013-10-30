@@ -179,4 +179,12 @@ public class EmptyTree extends BT{
     public boolean inOrder(Comparator<String> comp) {
     	return true;
     }
+    
+    public boolean greaterThan(String s, Comparator<String> comp) {
+    	return true;
+    }
+    
+    public boolean lessThan(String s, Comparator<String> comp) {
+    	return true;
+    }
 }

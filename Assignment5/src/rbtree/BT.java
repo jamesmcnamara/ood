@@ -160,11 +160,29 @@ public abstract class BT{
     public abstract boolean repOK();
     
     /**
+     * EFFECT:
      * Determines whether every object in the left subtree is less than this node
      * and every object in the right subtree is greater than this node
+     * WARNING: EXTREMELY TIME CONSUMING O(n^2)
+     * Only run when in debug mode
      * @param comp <code>Comparator</code> of <code>String</code>s
      * @return <code>boolean</code>
      */
     public abstract boolean inOrder(Comparator<String> comp);
-
+    
+    /**
+     * Ensures that every string in this tree is greater than the given string 
+     * @param s <code>String</code>
+     * @param comp <code>Comparator</code> of <code>String</code>s
+     * @return <code>boolean</code>
+     */
+    public abstract boolean greaterThan(String s, Comparator<String> comp);
+    
+    /**
+     * Ensures that every string in this tree is less than the given string 
+     * @param s <code>String</code>
+     * @param comp <code>Comparator</code> of <code>String</code>s
+     * @return <code>boolean</code>
+     */
+    public abstract boolean lessThan(String s, Comparator<String> comp);
 }

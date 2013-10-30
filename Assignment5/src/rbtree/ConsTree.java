@@ -327,10 +327,23 @@ public class ConsTree extends BT{
     			myLeft.repOK() && myRight.repOK();
     }
     
-    /*
-     *
-    	int compare = comp.compare(myString, myLeft)
+    public boolean inOrder(Comparator<String> comp) {
+    	return myRight.greaterThan(myString, comp) &&
+    			myLeft.lessThan(myString, comp) &&
+    			myRight.inOrder(comp) &&
+    			myLeft.inOrder(comp);
     }
-    */
+    
+    public boolean greaterThan(String s, Comparator<String> comp) {
+    	return comp.compare(myString, s) > 0 &&
+    			myLeft.greaterThan(s, comp) &&
+    			myRight.greaterThan(s, comp);
+    }
+    
+    public boolean lessThan(String s, Comparator<String> comp) {
+    	return comp.compare(myString, s) < 0 &&
+    			myLeft.lessThan(s, comp) &&
+    			myRight.lessThan(s, comp);
+    }
     
 }

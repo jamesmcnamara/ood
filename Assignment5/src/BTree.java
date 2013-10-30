@@ -23,8 +23,12 @@ public class BTree implements Iterable<String> {
     /**Counter for the number of iterators currently running*/
     private int active;
 
-
+    /**Red-Black Tree that maintains the strings in this BTree */
     private BT tree;
+    
+    /**Determines whether or not to run certain time consuming checks to
+     * ensure representation invariants */
+    private boolean DEBUG = false;
 
     /**
      * Constructor
@@ -39,7 +43,8 @@ public class BTree implements Iterable<String> {
     public boolean repOK() {
     	return (this.myCompare instanceof Comparator) &&
     			(this.tree instanceof BT) &&
-    			(this.tree.repOK());
+    			(this.tree.repOK()) &&
+    			(this.tree.inOrder(myCompare));
     }
 
     /**
@@ -72,6 +77,16 @@ public class BTree implements Iterable<String> {
         }
         for (String s : iter) {
             tree = tree.add(s, myCompare).makeBlack();
+        }
+        if (DEBUG) {
+        	if (!repOK()) {
+        		throw new RuntimeException
+        		("Invalid representation of a BTree");
+        	}
+        	else {
+        		System.out.println("BTree Rep is ok after build with " + 
+        				iter.getClass());
+        	}
         }
     }
 
@@ -106,6 +121,21 @@ public class BTree implements Iterable<String> {
                 tree = tree.add(iterator.next(), myCompare).makeBlack();
                 i = i + 1;
             }
+        }
+        
+        //if in debug mode, test that the representation is still valid
+        //if not, throw runtime exception
+        //else print that we are A-OK
+        if (DEBUG) {
+        	if (!repOK()) {
+        		throw new RuntimeException
+        		("Invalid representation of a BTree");
+        	}
+        	else {
+        		System.out.println("BTree Rep is ok after build with " + 
+        				iter.getClass() + " and " + 
+        				numStrings + " insertions");
+        	}
         }
     }
 
@@ -164,8 +194,8 @@ public class BTree implements Iterable<String> {
         }
     }
 
-    /**
-     * Equals method for BTrees
+    /**EFFECT:
+     * Determines if this BTree is Equal to the given BTree
      * @param bt <code>BTree</code>
      * @return <code>boolean</code>
      */
@@ -175,7 +205,7 @@ public class BTree implements Iterable<String> {
     }
 
     /**
-     * Effect: 
+     * EFFECT: 
      * Produces an integer that is compatible 
      * with the implemented  equals method 
      * and is likely to be different 
@@ -186,7 +216,7 @@ public class BTree implements Iterable<String> {
         return this.tree.hashCode() + this.myCompare.hashCode();
     }
 
-    /**
+    /**EFFECT:
      * Iterator method for the BTree class
      * @return <code>Iterator</code> over <code>String</code>s 
      */
