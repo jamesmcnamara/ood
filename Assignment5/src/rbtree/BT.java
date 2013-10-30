@@ -1,6 +1,5 @@
 package rbtree;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
@@ -22,17 +21,10 @@ public abstract class BT{
     public abstract BT add(String s, Comparator<String> comp);
 
     /**EFFECT:
-     * Returns an <code>ArrayList</code> representation of this BT 
-     * @param arList <code>ArrayList</code> of <code>Strings</code>
-     * @return <code>ArrayList</code> of <code>Strings</code>
-     */
-    public abstract ArrayList<String> listRep(ArrayList<String> arList);
-
-    /**EFFECT:
      * Determines whether this BT is an Empty Tree
      * @return <code>boolean</code>
      */
-    protected abstract boolean isEmpty();
+    public abstract boolean isEmpty();
 
     /**EFFECT:
      * Determines if the given string is contained in this tree
@@ -118,23 +110,16 @@ public abstract class BT{
     public abstract BT makeBlack();
     
     /**EFFECT:
-     * Determines how many Red nodes in this tree have red children
-     * should be 0, used in the repOK
-     * @return <code>int</code>
-     */
-    public abstract int redTest();
-    
-    /**EFFECT:
      * returns the number of strings stored in this BT
      * @return <code>int</code>
      */
-    public abstract int count();
+    protected abstract int count();
     
     /**EFFECT:
      * Returns the size of the maximum length path from root to node
      * @return <code>int</code>
      */
-    public abstract int height();
+    protected abstract int height();
     
     /**EFFECT:
      * returns the count of black nodes in the path from root to node
@@ -142,7 +127,7 @@ public abstract class BT{
      * should be exactly equal to max black count
      * @return <code>int</code>
      */
-    public abstract int maxBlackCount();
+    protected abstract int maxBlackCount();
     
 
     /**EFFECT:
@@ -151,7 +136,7 @@ public abstract class BT{
      * should be exactly equal to min black count
      * @return <code>int</code>
      */
-    public abstract int minBlackCount();
+    protected abstract int minBlackCount();
     
     /**EFFECT:
      * Determines whether this object is a valid representation of a BT
@@ -176,7 +161,7 @@ public abstract class BT{
      * @param comp <code>Comparator</code> of <code>String</code>s
      * @return <code>boolean</code>
      */
-    public abstract boolean greaterThan(String s, Comparator<String> comp);
+    protected abstract boolean greaterThan(String s, Comparator<String> comp);
     
     /**EFFECT:
      * Ensures that every string in this tree is less than the given string 
@@ -184,5 +169,11 @@ public abstract class BT{
      * @param comp <code>Comparator</code> of <code>String</code>s
      * @return <code>boolean</code>
      */
-    public abstract boolean lessThan(String s, Comparator<String> comp);
+    protected abstract boolean lessThan(String s, Comparator<String> comp);
+    
+    public abstract String getFirst();
+    
+    public abstract BT getRest();
+    
+    public abstract void analytics();
 }
