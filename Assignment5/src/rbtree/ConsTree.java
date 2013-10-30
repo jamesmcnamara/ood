@@ -86,7 +86,7 @@ public class ConsTree extends BT{
         
         //if the right tree is a ConsTree, add its values to the String
         if (!myRight.isEmpty()) {
-            s = ", " + myRight.toString();
+            s = s + ", " + myRight.toString();
         }
         
         return s;
@@ -190,10 +190,10 @@ public class ConsTree extends BT{
      */
     public boolean containsM(String s, Comparator<String> myCompare) {
         int comp = myCompare.compare(myString, s);
-        if (comp > 0) {
+        if (comp < 0) {
             return this.myRight.containsM(s, myCompare);
         }
-        else if (comp < 0) {
+        else if (comp > 0) {
             return this.myLeft.containsM(s, myCompare);
         }
         else {
@@ -319,5 +319,23 @@ public class ConsTree extends BT{
     
     public int height() {
     	return 1 + Math.max(myLeft.height(), myRight.height());
+    }
+    
+    public int maxBlackCount() {
+    	if (red) {
+    		return Math.max(myLeft.maxBlackCount(), myRight.maxBlackCount());
+    	}
+    	else {
+    		return 1 + Math.max(myLeft.maxBlackCount(), myRight.maxBlackCount());
+    	}
+    }
+    
+    public int minBlackCount() {
+    	if (red) {
+    		return Math.min(myLeft.minBlackCount(), myRight.minBlackCount());
+    	}
+    	else {
+    		return 1 + Math.min(myLeft.minBlackCount(), myRight.minBlackCount());
+    	}
     }
 }

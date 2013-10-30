@@ -86,5 +86,7 @@ public abstract class BT{
     public abstract int redTest();
     public abstract int count();
     public abstract int height();
+    public abstract int maxBlackCount();
+    public abstract int minBlackCount();
 
 }

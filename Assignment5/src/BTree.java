@@ -21,7 +21,7 @@ public class BTree implements Iterable<String> {
     Comparator<String> myCompare;
 
     /**Counter for the number of iterators currently running*/
-    int active;
+    private int active;
 
 
     private BT tree;
@@ -30,7 +30,7 @@ public class BTree implements Iterable<String> {
      * Constructor
      * @param comp <code>Comparator</code> for <code>String</code>s
      */
-    BTree (Comparator<String> comp) {
+    private BTree (Comparator<String> comp) {
         myCompare = comp;
         active = 0;
         tree = EmptyTree.getInstance();
@@ -67,9 +67,6 @@ public class BTree implements Iterable<String> {
         for (String s : iter) {
             tree = tree.add(s, myCompare).makeBlack();
         }
-        System.out.println(tree.redTest());       
-        System.out.println("This tree's count is " + tree.count() + 
-        		"\nThis tree's max height is " + tree.height());
     }
 
 
@@ -103,8 +100,6 @@ public class BTree implements Iterable<String> {
                 tree = tree.add(iterator.next(), myCompare).makeBlack();
                 i = i + 1;
             }
-            System.out.println("This tree's count is " + tree.count() + 
-            		"\nThis tree's max height is " + tree.height());
         }
     }
 

@@ -167,4 +167,12 @@ public class EmptyTree extends BT{
     public int height() {
     	return 0;
     }
+    
+    public int maxBlackCount() {
+    	return 0;
+    }
+    
+    public int minBlackCount() {
+    	return 0;
+    }
 }
