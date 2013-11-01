@@ -1,22 +1,37 @@
 import java.util.*;
+
+import rbtree.StringByLength;
+import rbtree.StringByLex;
 import tester.*;
 
+/**
+ * Class designed to run black box tests against the implementation of 
+ * BTree
+ * @author jamcnam
+ * @version 2013-10-30
+ */
 public class BTreeTestsBB {
 	/**Comparators for sorting */
 	Comparator<String> stringByLex = new StringByLex();
+	/**Comparators for sorting */
 	Comparator<String> stringByLen = new StringByLength();
 	
 	/**BTrees to test*/
 	BTree bByLex = BTree.binTree(stringByLex);
+	/**BTrees to test*/
 	BTree bByLex2 = BTree.binTree(stringByLex);
+	/**BTrees to test*/
 	BTree bByLen = BTree.binTree(stringByLen);
 
 	/**String iterators*/
 	StringIterator lexIter = new StringIterator(
 			"lexicographically_ordered.txt");
+	/**String iterators*/
 	StringIterator lexIter2 = new StringIterator(
 			"lexicographically_ordered.txt");
+	/**String iterators*/
 	StringIterator randIter = new StringIterator("random_order.txt");
+	/**String iterators*/
 	StringIterator randIter2 = new StringIterator("random_order.txt");
 	
 	/**MODIFIES:

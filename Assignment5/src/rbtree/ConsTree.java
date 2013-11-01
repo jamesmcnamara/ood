@@ -9,7 +9,7 @@ import java.util.Comparator;
  * @author jamcnam
  * @version 2013-10-08
  */
-public class ConsTree extends BT{
+public class ConsTree extends BT {
     /**
      * Left Binary Tree
      */
@@ -27,10 +27,10 @@ public class ConsTree extends BT{
 
     /**
      * Constructor
-     * @param comp <code>Comparator</code>
      * @param left <code>BT</code>
      * @param right <code>BT</code>
      * @param value <code>String</code>
+     * @param color <code>boolean</code>
      * 
      * Representation Invariant
      * this.myCompare is of type Comparator<String> &&
@@ -58,10 +58,10 @@ public class ConsTree extends BT{
      * @return boolean
      */
     public boolean repOK() {
-    	return (myLeft instanceof BT) &&
+        return (myLeft instanceof BT) &&
     			(myRight instanceof BT) &&
     			(myString instanceof String) &&
-    			(red == true || red == false) &&
+    			(red || !red) &&
     			(!myLeft.isRedAndHasRedChild()) &&
     			(!myRight.isRedAndHasRedChild()) &&
     			(myRight.minBlackCount() == myRight.maxBlackCount()) &&
@@ -119,7 +119,7 @@ public class ConsTree extends BT{
      * @return <code>boolean</code>
      */
     public boolean equals(Object o) {
-       if (o instanceof BT) {
+        if (o instanceof BT) {
             return this.equals((BT) o);
         }
         else {
@@ -163,46 +163,58 @@ public class ConsTree extends BT{
 
     /**EFFECT
      * Returns a BT that represents this tree plus the given String
-     * sorted by this BT's Comparator
+     * sorted by this BT's Comparator, with the root node (this node)
+     * cast as black
      * @param s <code>String</code>
      * @param myCompare <code>Comparator</code> of <code>String</code>s
      * @return <code>BT</code>
      */
     public BT add(String s, Comparator<String> myCompare) {
+        return insert(s, myCompare).makeBlack();
+    }
+    
+    /**EFFECT
+     * Returns a BT that represents this tree plus the given String
+     * sorted by this BT's Comparator, that is balanced via
+     * to the red-black algorithm
+     * @param s <code>String</code>
+     * @param myCompare <code>Comparator</code> of <code>String</code>s
+     * @return <code>BT</code>
+     */
+    public BT insert(String s, Comparator<String> myCompare) {
         int compare = myCompare.compare(s, myString);
         
         //if the given string is less than this string,
         //put it into the left subtree and rebalance
         if (compare < 0) {
-            return new ConsTree(myString, myLeft.add(s, myCompare), 
+            return new ConsTree(myString, myLeft.insert(s, myCompare), 
                     myRight, red).balance();
         }
         //if the given string is greater than this string,
         //put it into the right subtree and rebalance
         else if (compare > 0) {
             return new ConsTree(myString, myLeft, 
-                    myRight.add(s, myCompare), red).balance(); 
+                    myRight.insert(s, myCompare), red).balance(); 
         }
-        
         //if the string is already in this sub tree, do nothing
         else {
             return this;
         }
     }
-
+    
     /**EFFECT
      * Determines whether this tree contains the given <code>String</code>
      * @param s <code>String</code>
      * @param myCompare <code>Comparator</code> of <code>String</code>s
      * @return <code>Boolean</code>
      */
-    public boolean containsM(String s, Comparator<String> myCompare) {
+    public boolean contains(String s, Comparator<String> myCompare) {
         int comp = myCompare.compare(myString, s);
         if (comp < 0) {
-            return this.myRight.containsM(s, myCompare);
+            return this.myRight.contains(s, myCompare);
         }
         else if (comp > 0) {
-            return this.myLeft.containsM(s, myCompare);
+            return this.myLeft.contains(s, myCompare);
         }
         else {
             return true;
@@ -226,7 +238,7 @@ public class ConsTree extends BT{
         	
         	//if the left and the left's left are red,
         	//the left tree comes up and everything 
-        	//else falls into it's relative place
+        	//else falls into its relative place
             if (this.myLeft.getLeft().red) {
                 BT newLeft = myLeft.getLeft().invertColor();
                 BT newRight = new ConsTree(myString, myLeft.getRight(),
@@ -236,7 +248,7 @@ public class ConsTree extends BT{
             }
             //if the left and the left's right are red,
         	//the left's right comes up and everything 
-        	//else falls into it's relative place
+        	//else falls into its relative place
             else {
                 BT newLeft = new ConsTree(myLeft.getString(), 
                         myLeft.getLeft(), 
@@ -255,9 +267,9 @@ public class ConsTree extends BT{
         else if (!red && myRight.isRedAndHasRedChild()) {
         	//if the right and the rights's left are red,
         	//the right's left comes up and everything 
-        	//else falls into it's relative place
+        	//else falls into its relative place
             if (this.myRight.getLeft().red) {
-                BT newLeft = new ConsTree (myString, myLeft,
+                BT newLeft = new ConsTree(myString, myLeft,
                         myRight.getLeft().getLeft(),
                         false);
                 BT newRight = new ConsTree(myRight.getString(),
@@ -271,7 +283,7 @@ public class ConsTree extends BT{
             }
             //if the right and the right's right are red,
         	//the right tree comes up and everything 
-        	//else falls into it's relative place
+        	//else falls into its relative place
             else {
                 BT newLeft = new ConsTree(myString,
                         myLeft,
@@ -480,4 +492,9 @@ public class ConsTree extends BT{
     				"\nThe representation is ok? " + repOK());
     }
     
+    public boolean redTest() {
+        return this.isRedAndHasRedChild() &&
+                myLeft.redTest() &&
+                myRight.redTest();
+    }
 }

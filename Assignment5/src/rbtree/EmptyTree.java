@@ -101,6 +101,7 @@ public class EmptyTree extends BT{
 		return 0;
 	}
 
+	
 	/**
 	 * Returns a BT which represents this BT plus the given 
 	 * <code>String</code> inserted in sorted order
@@ -108,8 +109,18 @@ public class EmptyTree extends BT{
 	 * @return <code>BT</code>
 	 */
 	public BT add(String s, Comparator<String> comp) {
-		return new ConsTree(s,getInstance(), getInstance(), true);
+		return insert(s, comp);
 	}
+	
+	/**
+     * Returns a BT which represents this BT plus the given 
+     * <code>String</code> inserted in sorted order
+     * @param comp <code>Comparator</code> of <code>String</code>s
+     * @return <code>BT</code>
+     */
+    public BT insert(String s, Comparator<String> comp) {
+        return new ConsTree(s,getInstance(), getInstance(), true);
+    }
 
 	/**
 	 * Determines whether this tree contains the given string, 
@@ -117,7 +128,7 @@ public class EmptyTree extends BT{
 	 * @param s <code>String</code>
 	 * @param comp <code>Comparator</code> of <code>String</code>s
 	 */
-	public boolean containsM(String s, Comparator<String> comp) {
+	public boolean contains(String s, Comparator<String> comp) {
 		return false;
 	}
 
@@ -254,5 +265,9 @@ public class EmptyTree extends BT{
      */
 	public void analytics() {
 		System.out.println("This tree is empty.");
+	}
+	
+	public boolean redTest() {
+	    return false;
 	}
 }

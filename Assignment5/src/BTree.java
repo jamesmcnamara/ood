@@ -28,18 +28,24 @@ public class BTree implements Iterable<String> {
 
 	/**Determines whether or not to run certain time consuming checks to
 	 * ensure representation invariants */
-	private boolean DEBUG = false;
+	private final boolean DEBUG = false;
 
 	/**
 	 * Constructor
 	 * @param comp <code>Comparator</code> for <code>String</code>s
 	 */
-	private BTree (Comparator<String> comp) {
+	private BTree(Comparator<String> comp) {
 		myCompare = comp;
 		active = 0;
 		tree = EmptyTree.getInstance();
 	}
 
+	/**EFFECT
+	 * Determines whether or not this BTree is a valid representation
+	 * of a BTree
+	 * Note: very expensive computation, should only be run in debug mode 
+	 * @return <code>boolean</code>
+	 */
 	public boolean repOK() {
 		return (this.myCompare instanceof Comparator) &&
 				(this.tree instanceof BT) &&
@@ -116,8 +122,8 @@ public class BTree implements Iterable<String> {
 
 		Iterator<String> iterator = iter.iterator();
 		int i = 0;
-		while(iterator.hasNext() && i < numStrings) {
-			tree = tree.add(iterator.next(), myCompare).makeBlack();
+		while (iterator.hasNext() && i < numStrings) {
+			tree = tree.add(iterator.next(), myCompare);
 			i = i + 1;
 		}
 
@@ -126,8 +132,8 @@ public class BTree implements Iterable<String> {
 		//else print data on the tree
 		if (DEBUG) {
 			if (!repOK()) {
-				throw new RuntimeException
-				("Invalid representation of a BTree");
+				throw new RuntimeException("Invalid representation" +
+			" of a BTree");
 			}
 			else {
 				tree.analytics();
@@ -142,7 +148,7 @@ public class BTree implements Iterable<String> {
 	 * @return whether this contains s
 	 */
 	public boolean contains(String s) {
-		return this.tree.containsM(s, myCompare);
+		return this.tree.contains(s, myCompare);
 	}
 
 
@@ -232,7 +238,7 @@ public class BTree implements Iterable<String> {
 		/**
 		 * Constructor
 		 */
-		private BTreeGen(){
+		private BTreeGen() {
 			incremented = false;
 			treeToIter = tree;
 		}

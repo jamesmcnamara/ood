@@ -13,12 +13,22 @@ public abstract class BT{
     boolean red;
     
     /**EFFECT:
-     * Abstract function to add the given String to this BT
+     * Abstract function to add the given String to this BT, and
+     * cast the root to black
      * @param s <code>String</code>
      * @param comp <code>Comparator</code> of <code>String</code>s
      * @return <code>BT</code>
      */
     public abstract BT add(String s, Comparator<String> comp);
+    
+    /**EFFECT:
+     * Abstract function to insert the given String to this BT, and
+     * rebalance the tree via the red-black algorithm
+     * @param s <code>String</code>
+     * @param comp <code>Comparator</code> of <code>String</code>s
+     * @return <code>BT</code>
+     */
+    public abstract BT insert(String s, Comparator<String> comp);
 
     /**EFFECT:
      * Determines whether this BT is an Empty Tree
@@ -33,7 +43,7 @@ public abstract class BT{
      * @param comp <code>Comparator</code> of <code>String</code>s
      * @return boolean
      */
-    public abstract boolean containsM(String s, Comparator<String> comp);
+    public abstract boolean contains(String s, Comparator<String> comp);
     
     /**
      * Effect: 
@@ -171,9 +181,23 @@ public abstract class BT{
      */
     protected abstract boolean lessThan(String s, Comparator<String> comp);
     
+    /**EFFECT:
+     * Returns the string that is located in the left most node of this tree
+     * @return <code>String</code>
+     */
     public abstract String getFirst();
     
+    /**EFFECT:
+     * Returns this BT with the left most node removed
+     * @return <code>BT</code>
+     */
     public abstract BT getRest();
     
+    /**EFFECT
+     * Prints out various statistics about this BT to the console
+     */
     public abstract void analytics();
+    
+   
+    public abstract boolean redTest();
 }
