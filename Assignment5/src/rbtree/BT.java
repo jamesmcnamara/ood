@@ -11,6 +11,11 @@ public abstract class BT {
 
     /**All Red-Black Tree's must be either Red or Black    */
     boolean red;
+    
+    /**
+     * Comparator
+     */
+    Comparator<String> myCompare;
 
     /**EFFECT:
      * Abstract function to add the given String to this BT, and
@@ -44,31 +49,6 @@ public abstract class BT {
      * @return boolean
      */
     public abstract boolean contains(String s, Comparator<String> comp);
-
-    /**
-     * Effect: 
-     * Produces false if o is not an instance of BTree.
-     * Produces true if this tree and the given BTree 
-     * contain the same <code>String</code>s and
-     * are ordered by the same <code>Comparator</code>.
-     * So if the first tree was built with Strings 
-     * "hello" "bye" and "aloha" ordered
-     * lexicographically,  and the second tree was built 
-     * with <code>String</code>s "aloha" "hello" and "bye"  
-     * and ordered lexicographically, 
-     * the result would be true.
-     *
-     * @param o the object to compare with this
-     * @return <code>boolean</code>
-     */
-    public boolean equals(Object o) {
-        if (o instanceof BT) {
-            return this.equals((BT) o);
-        }
-        else {
-            return false;
-        }
-    }
 
     /**EFFECT:
      * Implements the Red-Black paradigm by looking for instances of 
@@ -197,4 +177,8 @@ public abstract class BT {
      * Prints out various statistics about this BT to the console
      */
     public abstract void analytics();
+    
+    public void setComparator(Comparator<String> comp) {
+        myCompare = comp;
+    }
 }

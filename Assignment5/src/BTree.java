@@ -38,6 +38,7 @@ public class BTree implements Iterable<String> {
         myCompare = comp;
         active = 0;
         tree = EmptyTree.getInstance();
+        tree.setComparator(myCompare);
     }
 
     /**EFFECT

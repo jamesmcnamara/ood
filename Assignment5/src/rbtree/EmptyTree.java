@@ -274,8 +274,4 @@ public class EmptyTree extends BT {
     public void analytics() {
         System.out.println("This tree is empty.");
     }
-
-    public boolean redTest() {
-        return false;
-    }
 }

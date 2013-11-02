@@ -21,14 +21,15 @@ public class ExamplesBTree {
     /**BTrees to test*/
     BTree bByLen = BTree.binTree(stringByLen);
 
-    /**Array Lists */
-    ArrayList<String> randIter  = new ArrayList<String> (Arrays.asList(
+    /**Array Lists random sort */
+    ArrayList<String> randIter  = new ArrayList<String>(Arrays.asList(
             "anastrophe", "antilitter", "browser", "athanasius", "appraisals",
             "colpitis", "clydebank", "conceptualisations", "annually", 
             "bersagliere", "apache", "cade", "chevet", "asynapsis", "augustly",
             "coke", "astonished", "conductometric", "crony", "attractivity",
-            "altruistically", "airtight", "clinched", "bakery","chromatograph",
-            "acetification", "alkyd", "capework","colloquoy", "concertize",
+            "altruistically", "airtight", "clinched", "bakery", 
+            "chromatograph",
+            "acetification", "alkyd", "capework", "colloquoy", "concertize",
             "castrate", "astrocytoma", "causticisations", "ascites", "anode",
             "compartments", "attractable", "affirmative", "aureole", 
             "believes", "ballplayer", "bleary", "circumstanced", "cladophora", 
@@ -45,10 +46,11 @@ public class ExamplesBTree {
             "constringe", "anaglyph", "castration", "contingence", "bedraggle",
             "auras", "chromatograms")); 
     
+    /**Array Lists lexicographic sort */
     ArrayList<String> lexIter = new ArrayList<String>(Arrays.asList("a",
             "aardvark", "aardvarks", "aardwolf", "ab", "abac", "abaca",
             "abacterial", "abactinal", "abacus", "abacuses", "abadan",
-            "abaddon","abaft", "abakan", "abalone", "abalones", "abamp",
+            "abaddon", "abaft", "abakan", "abalone", "abalones", "abamp",
             "abampere", "abandon", "abandoned", "abandonee", "abandoner",
             "abandoning", "abandonment", "abandonments", "abandons",
             "abase", "abased", "abasement", "abasements", "abaser",
@@ -170,7 +172,7 @@ public class ExamplesBTree {
         bByLex.build(new ArrayList<String>(Arrays.asList("Hi", "Aloha", 
                 "Bonjour", "Wilkommen", "Jambo", "Bienvenido", "Nieho")));
         
-        //sorted, comma seperated string representation without trailing commas
+        //sorted, comma separated string representation without trailing commas
         t.checkExpect(bByLex.toString(),
                 "Aloha, Bienvenido, Bonjour, Hi, Jambo, Nieho, Wilkommen");
         
@@ -309,6 +311,10 @@ public class ExamplesBTree {
         t.checkExpect(bByLex.contains("chromatograms"), true);
     }
     
+    /**EFFECT
+     * Test the representation invariants
+     * @param t <code>Tester</code>
+     */
     public void testRepOK(Tester t) {
         reset();
         t.checkExpect(bByLex.repOK(), true); 
