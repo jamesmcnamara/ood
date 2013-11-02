@@ -35,7 +35,7 @@ public class StringByLex implements Comparator<String> {
     }
 
     /**
-     * returns an integer represenation of this comparator
+     * returns an integer representation of this comparator
      * @return int
      */
     public int hashCode() {

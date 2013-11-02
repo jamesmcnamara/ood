@@ -34,10 +34,18 @@ public class StringByLength implements Comparator<String> {
         return (o instanceof StringByLength);
     }
 
+    /**
+     * returns an integer representation of this comparator
+     * @return int
+     */
     public int hashCode() {
         return 1;
     }
     
+    /**
+     * Returns a String representation of this Comparator
+     * @return <code>String</code>
+     */
     public String toString() {
         return "StringByLength";
     }

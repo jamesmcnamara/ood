@@ -33,7 +33,6 @@ public class ConsTree extends BT {
      * @param color <code>boolean</code>
      * 
      * Representation Invariant
-     * this.myCompare is of type Comparator<String> &&
      * this.myLeft is of type BT &&
      * this.myRight is of type BT &&
      * this.myString.getClass() == "String" &&
@@ -51,7 +50,7 @@ public class ConsTree extends BT {
         myRight = right;
         red = color;
     }
-    
+
     /**EFFECT
      * Boolean method that can be used in testing to verify that this object
      * is a legal representation
@@ -59,18 +58,18 @@ public class ConsTree extends BT {
      */
     public boolean repOK() {
         return (myLeft instanceof BT) &&
-    			(myRight instanceof BT) &&
-    			(myString instanceof String) &&
-    			(red || !red) &&
-    			(!myLeft.isRedAndHasRedChild()) &&
-    			(!myRight.isRedAndHasRedChild()) &&
-    			(myRight.minBlackCount() == myRight.maxBlackCount()) &&
-    			(myLeft.minBlackCount() == myLeft.maxBlackCount()) &&
-    			(myRight.minBlackCount() == myLeft.maxBlackCount()) &&
-    			myLeft.repOK() && myRight.repOK();
+                (myRight instanceof BT) &&
+                (myString instanceof String) &&
+                (red || !red) &&
+                (!myLeft.isRedAndHasRedChild()) &&
+                (!myRight.isRedAndHasRedChild()) &&
+                (myRight.minBlackCount() == myRight.maxBlackCount()) &&
+                (myLeft.minBlackCount() == myLeft.maxBlackCount()) &&
+                (myRight.minBlackCount() == myLeft.maxBlackCount()) &&
+                myLeft.repOK() && myRight.repOK();
     }
-    
-    
+
+
     /**EFFECT:
      * Determines whether this Tree is empty
      * @return <code>boolean</code>
@@ -78,7 +77,7 @@ public class ConsTree extends BT {
     public boolean isEmpty() {
         return false;
     }
-    
+
     /**EFFECT:
      * Concatenates the <code>String</code>s in the tree into one 
      * <code>String</code>
@@ -90,18 +89,18 @@ public class ConsTree extends BT {
         if (!myLeft.isEmpty()) {
             s = myLeft.toString() + ", ";
         }
-        
+
         //add my value to the string
         s = s + myString;
-        
+
         //if the right tree is a ConsTree, add its values to the String
         if (!myRight.isEmpty()) {
             s = s + ", " + myRight.toString();
         }
-        
+
         return s;
     }
-    
+
     /**
      * Effect: 
      * Produces false if o is not an instance of BTree.
@@ -126,7 +125,7 @@ public class ConsTree extends BT {
             return false;
         }
     }
-    
+
     /**EFFECT:
      * Determines if this ConsTree is equal to the given BT
      * @param bt <code>BT</code>
@@ -140,7 +139,7 @@ public class ConsTree extends BT {
             return false;
         }
     }
-    
+
     /**EFFECT
      * Determines if this ConsTree is equal to the given ConsTree
      * @param bt <code>BT</code>
@@ -151,7 +150,7 @@ public class ConsTree extends BT {
                 && myLeft.equals(bt.myLeft) 
                 && myRight.equals(bt.myRight);
     }
-    
+
     /**EFFECT
      * Returns an integer representation of this ConsTree
      * @return <code>int</code>
@@ -172,7 +171,7 @@ public class ConsTree extends BT {
     public BT add(String s, Comparator<String> myCompare) {
         return insert(s, myCompare).makeBlack();
     }
-    
+
     /**EFFECT
      * Returns a BT that represents this tree plus the given String
      * sorted by this BT's Comparator, that is balanced via
@@ -183,7 +182,7 @@ public class ConsTree extends BT {
      */
     public BT insert(String s, Comparator<String> myCompare) {
         int compare = myCompare.compare(s, myString);
-        
+
         //if the given string is less than this string,
         //put it into the left subtree and rebalance
         if (compare < 0) {
@@ -201,7 +200,7 @@ public class ConsTree extends BT {
             return this;
         }
     }
-    
+
     /**EFFECT
      * Determines whether this tree contains the given <code>String</code>
      * @param s <code>String</code>
@@ -220,7 +219,7 @@ public class ConsTree extends BT {
             return true;
         }
     }
-    
+
     /**EFFECT
      * Examines a local area for unbalanced nodes and 
      * returns a node that is locally balanced 
@@ -235,10 +234,10 @@ public class ConsTree extends BT {
      */
     protected BT balance() {
         if (!red && myLeft.isRedAndHasRedChild()) {
-        	
-        	//if the left and the left's left are red,
-        	//the left tree comes up and everything 
-        	//else falls into its relative place
+
+            //if the left and the left's left are red,
+            //the left tree comes up and everything 
+            //else falls into its relative place
             if (this.myLeft.getLeft().red) {
                 BT newLeft = myLeft.getLeft().invertColor();
                 BT newRight = new ConsTree(myString, myLeft.getRight(),
@@ -247,8 +246,8 @@ public class ConsTree extends BT {
                         newRight, true);
             }
             //if the left and the left's right are red,
-        	//the left's right comes up and everything 
-        	//else falls into its relative place
+            //the left's right comes up and everything 
+            //else falls into its relative place
             else {
                 BT newLeft = new ConsTree(myLeft.getString(), 
                         myLeft.getLeft(), 
@@ -265,9 +264,9 @@ public class ConsTree extends BT {
             }
         }
         else if (!red && myRight.isRedAndHasRedChild()) {
-        	//if the right and the rights's left are red,
-        	//the right's left comes up and everything 
-        	//else falls into its relative place
+            //if the right and the rights's left are red,
+            //the right's left comes up and everything 
+            //else falls into its relative place
             if (this.myRight.getLeft().red) {
                 BT newLeft = new ConsTree(myString, myLeft,
                         myRight.getLeft().getLeft(),
@@ -282,8 +281,8 @@ public class ConsTree extends BT {
                         true);
             }
             //if the right and the right's right are red,
-        	//the right tree comes up and everything 
-        	//else falls into its relative place
+            //the right tree comes up and everything 
+            //else falls into its relative place
             else {
                 BT newLeft = new ConsTree(myString,
                         myLeft,
@@ -297,43 +296,45 @@ public class ConsTree extends BT {
             }
         }
         //else the local area is balanced
-        else return this;
+        else {
+            return this;
+        }
     }
-    
+
     /**EFFECT
      * Returns the string that is furthest to the left in this tree
      * @return <code>String</code> 
      */
     public String getFirst() {
-    	if (myLeft.isEmpty()) {
-    		return myString;
-    	}
-    	else {
-    		return myLeft.getFirst();
-    	}
+        if (myLeft.isEmpty()) {
+            return myString;
+        }
+        else {
+            return myLeft.getFirst();
+        }
     }
-    
+
     /**EFFECT
      * Returns a tree that mimics this BT, except that it lacks the 
      * furthest left String
      * @return <code>BT</code> 
      */
     public BT getRest() {
-    	if (myLeft.isEmpty()) {
-    		if (myRight.isEmpty()) {
-    			return EmptyTree.getInstance();
-    		}
-    		else {
-    			return myRight;
-    		}
-    	}
-    	else {
-    		//If my left is not empty, return all elements in this tree,
-    		// along with the getRest of the left subtree
-    		return new ConsTree(myString, myLeft.getRest(), myRight, red);
-    	}
+        if (myLeft.isEmpty()) {
+            if (myRight.isEmpty()) {
+                return EmptyTree.getInstance();
+            }
+            else {
+                return myRight;
+            }
+        }
+        else {
+            //If my left is not empty, return all elements in this tree,
+            // along with the getRest of the left subtree
+            return new ConsTree(myString, myLeft.getRest(), myRight, red);
+        }
     }
-    
+
     /**EFFECT
      * Determines whether this node is red and has a child which is red
      * @return boolean
@@ -341,7 +342,7 @@ public class ConsTree extends BT {
     protected boolean isRedAndHasRedChild() {
         return this.red && (this.myLeft.red || this.myRight.red);
     }
-    
+
     /**PRODUCES
      * This tree's left tree
      * @return <code>BT</code> 
@@ -349,7 +350,7 @@ public class ConsTree extends BT {
     protected BT getLeft() {
         return this.myLeft;
     }
-    
+
     /**PRODUCES
      * This tree's right tree
      * @return <code>BT</code> 
@@ -357,7 +358,7 @@ public class ConsTree extends BT {
     protected BT getRight() {
         return this.myRight;
     }
-    
+
     /**PRODUCES
      * This tree's right tree
      * @return <code>String</code> 
@@ -365,7 +366,7 @@ public class ConsTree extends BT {
     protected String getString() {
         return this.myString;
     }
-    
+
     /**PRODUCES
      * This tree, with its color flipped
      * @return <code>BT</code> 
@@ -373,7 +374,7 @@ public class ConsTree extends BT {
     protected BT invertColor() {
         return new ConsTree(myString, myLeft, myRight, !red);
     }
-    
+
     /**PRODUCES
      * This tree, but if it's color had previously been red,
      * it will now be black
@@ -383,17 +384,19 @@ public class ConsTree extends BT {
         if (red) {
             return this.invertColor();
         }
-        else return this;
+        else {
+            return this;
+        }
     }
-    
+
     /**EFFECT
      * Returns the number of strings in this tree
      * @return <code>int</code>
      */
     protected int count() {
-    	return 1 + myLeft.count() + myRight.count();
+        return 1 + myLeft.count() + myRight.count();
     }
-    
+
     /**EFFECT
      * Returns the number of levels in this tree
      * For a tree of count n, this should be 
@@ -401,9 +404,9 @@ public class ConsTree extends BT {
      * @return <code>int</code>
      */
     protected int height() {
-    	return 1 + Math.max(myLeft.height(), myRight.height());
+        return 1 + Math.max(myLeft.height(), myRight.height());
     }
-    
+
     /**EFFECT
      * Finds the path in this tree from root to node which has the most
      * black nodes
@@ -411,14 +414,14 @@ public class ConsTree extends BT {
      * @return <code>int</code>
      */
     protected int maxBlackCount() {
-    	if (red) {
-    		return Math.max(myLeft.maxBlackCount(), 
-    				myRight.maxBlackCount());
-    	}
-    	else {
-    		return 1 + Math.max(myLeft.maxBlackCount(), 
-    				myRight.maxBlackCount());
-    	}
+        if (red) {
+            return Math.max(myLeft.maxBlackCount(), 
+                    myRight.maxBlackCount());
+        }
+        else {
+            return 1 + Math.max(myLeft.maxBlackCount(), 
+                    myRight.maxBlackCount());
+        }
     }
     /**EFFECT
      * Finds the path in this tree from root to node which has the least
@@ -427,16 +430,16 @@ public class ConsTree extends BT {
      * @return <code>int</code>
      */
     protected int minBlackCount() {
-    	if (red) {
-    		return Math.min(myLeft.minBlackCount(), 
-    				myRight.minBlackCount());
-    	}
-    	else {
-    		return 1 + Math.min(myLeft.minBlackCount(), 
-    				myRight.minBlackCount());
-    	}
+        if (red) {
+            return Math.min(myLeft.minBlackCount(), 
+                    myRight.minBlackCount());
+        }
+        else {
+            return 1 + Math.min(myLeft.minBlackCount(), 
+                    myRight.minBlackCount());
+        }
     }
-    
+
     /**EFFECT
      * Determines whether every string in this tree is greater 
      * than every string in its left subtree and less than 
@@ -446,12 +449,12 @@ public class ConsTree extends BT {
      * @return <code>boolean</code>
      */
     public boolean inOrder(Comparator<String> comp) {
-    	return myRight.greaterThan(myString, comp) &&
-    			myLeft.lessThan(myString, comp) &&
-    			myRight.inOrder(comp) &&
-    			myLeft.inOrder(comp);
+        return myRight.greaterThan(myString, comp) &&
+                myLeft.lessThan(myString, comp) &&
+                myRight.inOrder(comp) &&
+                myLeft.inOrder(comp);
     }
-    
+
     /**EFFECT
      * Determines whether every node in this tree is greater than
      * the given <code>String</code>, as compared by the given 
@@ -461,11 +464,11 @@ public class ConsTree extends BT {
      * @return <code>boolean</code>
      */
     protected boolean greaterThan(String s, Comparator<String> comp) {
-    	return comp.compare(myString, s) > 0 &&
-    			myLeft.greaterThan(s, comp) &&
-    			myRight.greaterThan(s, comp);
+        return comp.compare(myString, s) > 0 &&
+                myLeft.greaterThan(s, comp) &&
+                myRight.greaterThan(s, comp);
     }
-    
+
     /**EFFECT
      * Determines whether every node in this tree is less than
      * the given <code>String</code>, as compared by the given 
@@ -475,26 +478,20 @@ public class ConsTree extends BT {
      * @return <code>boolean</code>
      */
     protected boolean lessThan(String s, Comparator<String> comp) {
-    	return comp.compare(myString, s) < 0 &&
-    			myLeft.lessThan(s, comp) &&
-    			myRight.lessThan(s, comp);
+        return comp.compare(myString, s) < 0 &&
+                myLeft.lessThan(s, comp) &&
+                myRight.lessThan(s, comp);
     }
-    
+
     /**EFFECT
      * Prints to the console various statistics about the given 
      * tree which may be useful for debugging
      */
     public void analytics() {
-    	System.out.println("\nThe tree has " + count() + " members\n" +
-    				"There is a minimum of " + minBlackCount() + 
-    				" and a maximum of " + maxBlackCount() + " black nodes" +
-    				"\nThe tree has a height of " + height() +
-    				"\nThe representation is ok? " + repOK());
-    }
-    
-    public boolean redTest() {
-        return this.isRedAndHasRedChild() &&
-                myLeft.redTest() &&
-                myRight.redTest();
+        System.out.println("\nThe tree has " + count() + " members\n" +
+                "There is a minimum of " + minBlackCount() + 
+                " and a maximum of " + maxBlackCount() + " black nodes" +
+                "\nThe tree has a height of " + height() +
+                "\nThe representation is ok? " + repOK());
     }
 }

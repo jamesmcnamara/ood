@@ -1,3 +1,4 @@
+
 import java.util.Comparator;
 
 
@@ -6,9 +7,9 @@ import java.util.Comparator;
  * Comparator class who's compare method determines which of two strings have 
  * the first lexicographic ordering
  * @author jamcnam
+ * @version 2013-10-31
  */
-class StringByLex implements Comparator<String> {
-
+public class StringByLex implements Comparator<String> {
 
     /**
      * Determines the degree that s2 is greater than s1
@@ -34,7 +35,7 @@ class StringByLex implements Comparator<String> {
     }
 
     /**
-     * returns an integer represenation of this comparator
+     * returns an integer representation of this comparator
      * @return int
      */
     public int hashCode() {
