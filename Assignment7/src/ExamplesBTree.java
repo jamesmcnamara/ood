@@ -1,6 +1,12 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-import tester.*;
+import rbtree.IntBySize;
+import tester.Tester;
 
 /**
  * Class designed to run black box tests against the implementation of 
@@ -13,13 +19,17 @@ public class ExamplesBTree {
     Comparator<String> stringByLex = new StringByLex();
     /**Comparators for sorting */
     Comparator<String> stringByLen = new StringByLength();
-    
+    /**Comparator for integers*/
+    Comparator<Integer> size = new IntBySize();
+
     /**BTrees to test*/
-    BTree bByLex = BTree.binTree(stringByLex);
+    BTree<String> bByLex = BTree.binTree(stringByLex);
     /**BTrees to test*/
-    BTree bByLex2 = BTree.binTree(stringByLex);
+    BTree<String> bByLex2 = BTree.binTree(stringByLex);
     /**BTrees to test*/
-    BTree bByLen = BTree.binTree(stringByLen);
+    BTree<String> bByLen = BTree.binTree(stringByLen);
+    /**BTrees to test*/
+    BTree<Integer> bBySize = BTree.binTree(size);
 
     /**Array Lists random sort */
     ArrayList<String> randIter  = new ArrayList<String>(Arrays.asList(
@@ -45,7 +55,7 @@ public class ExamplesBTree {
             "abscesses", "antibacterial", "buffalo", "burping", "basilisk", 
             "constringe", "anaglyph", "castration", "contingence", "bedraggle",
             "auras", "chromatograms")); 
-    
+
     /**Array Lists lexicographic sort */
     ArrayList<String> lexIter = new ArrayList<String>(Arrays.asList("a",
             "aardvark", "aardvarks", "aardwolf", "ab", "abac", "abaca",
@@ -67,7 +77,20 @@ public class ExamplesBTree {
             "abducens", "abducent", "abducentes", "abducing", "abduct",
             "abducted", "abducting", "abduction", "abductions", "abductor",
             "abductors", "abducts", "abeam", "abecedarian", "abed"));
-  
+    
+    /**Array List - Integers */
+    ArrayList<Integer> intList = new ArrayList<Integer>(Arrays.asList(3, 
+            5, 8, 16, 19, 10, 39, 470, 11, 476, 207, 247, 42, 120, 699,
+            732, 264, 141, 206, 854, 517, 662, 615, 894, 742, 669, 334,  
+            922, 492, 808, 613, 103, 932, 994, 69, 659, 20, 987, 252,  
+            66, 743, 510, 624, 121, 157, 959, 824, 3, 783, 239, 136, 
+            118, 682, 540, 748, 365, 78, 831, 457, 363, 597, 864, 
+            641, 649, 135, 222, 518, 321, 185, 686, 161, 515, 678,
+            842, 519, 457, 369, 36, 204, 720, 136, 838, 582, 542,
+            789, 24, 336, 830, 262, 103, 451, 653, 790, 338, 753, 
+            73, 610, 83, 197, 466, 37, 929, 76, 780, 477, 275));
+            
+
     /**MODIFIES:
      * method will set every object used for testing back to 
      * its factory settings
@@ -76,19 +99,20 @@ public class ExamplesBTree {
         bByLex = BTree.binTree(stringByLex);        
         bByLex2 = BTree.binTree(stringByLex);
         bByLen = BTree.binTree(stringByLen);
+        bBySize = BTree.binTree(size);
     }
-    
+
     /**EFFECT:
      * Method tests whether the factory method for BTree operates as specified
      * @param t <code>Tester</code>
      */
     public void testBinTree(Tester t) {
         reset();
-        BTree b = BTree.binTree(stringByLex);
-        t.checkExpect(b instanceof BTree, true);
-        
+        BTree<String> b = BTree.binTree(stringByLex);
+        t.checkExpect(b instanceof BTree<?>, true);
+
     }
-    
+
     /**EFFECT:
      * Method tests whether the build method for BTree operates as specified
      * @param t <code>Tester</code>
@@ -98,16 +122,20 @@ public class ExamplesBTree {
         //empty trees have nothing in them
         t.checkExpect(bByLex.contains("aardvark"), false);
         t.checkExpect(bByLen.contains("aardvarks"), false);
+        t.checkExpect(bByLen.contains("aardvarks"), false);
         
         bByLex.build(lexIter);
         bByLen.build(randIter);
+        bBySize.build(intList); 
         
         //Trees that have been built now contain certain strings
         t.checkExpect(bByLex.contains("aardvark"), true);
         t.checkExpect(bByLen.contains("aardvarks"), true);
         t.checkExpect(bByLex.contains("zathura"), false);
+        t.checkExpect(bBySize.contains(457), true);
+        t.checkExpect(bBySize.contains(459), false);
     }
-    
+
     /**EFFECT:
      * Method tests the build method for BTree which consumes a number
      * of strings to iterate over and ensures that the right number of
@@ -116,14 +144,17 @@ public class ExamplesBTree {
      */
     public void testBuildNumStrings(Tester t) {
         reset();
-        
+
         //Test with a small number to see that only some strings are added
         t.checkExpect(bByLex.contains("abberations"), false);
         t.checkExpect(bByLex.contains("aardvark"), false);
         bByLex.build(lexIter, 10);
+        bBySize.build(intList, 15);
         t.checkExpect(bByLex.contains("aardvark"), true);
         t.checkExpect(bByLex.contains("abberations"), false);
-        
+        t.checkExpect(bBySize.contains(470), true);
+        t.checkExpect(bBySize.contains(457), false);
+
         //Test with more strings, to show that increasing the number
         //increases the count
         reset();
@@ -132,16 +163,20 @@ public class ExamplesBTree {
         bByLex.build(lexIter, 100);
         t.checkExpect(bByLex.contains("aardvark"), true);
         t.checkExpect(bByLex.contains("abberations"), true);
-        
+
         //test with a negative number to show that all strings are added
         reset();
         t.checkExpect(bByLex.contains("abberations"), false);
         t.checkExpect(bByLex.contains("aardvark"), false);
         bByLex.build(lexIter, -1);
+        bBySize.build(intList, -1);
         t.checkExpect(bByLex.contains("aardvark"), true);
         t.checkExpect(bByLex.contains("abberations"), true);
+        t.checkExpect(bBySize.contains(470), true);
+        t.checkExpect(bBySize.contains(457), true);
+
     }
-    
+
     /**EFFECT:
      * Method tests whether the contains method for BTree correctly
      * identifies if a string belongs to the given tree
@@ -151,13 +186,13 @@ public class ExamplesBTree {
         reset();
         t.checkExpect(bByLen.contains("Hello"), false);
         t.checkExpect(bByLen.contains("Goodbye"), false);
-        
+
         bByLen.build(new ArrayList<String>(Arrays.asList("Hello")));
-        
+
         t.checkExpect(bByLen.contains("Hello"), true);
         t.checkExpect(bByLen.contains("Goodbye"), false);
     }
-    
+
     /**EFFECT:
      * Method tests whether the toString method for BTree returns the
      * correct string representation of a BTree
@@ -165,26 +200,26 @@ public class ExamplesBTree {
      */
     public void testToString(Tester t) {
         reset();
-        
+
         //empty tree returns an empty string
         t.checkExpect(bByLex.toString(), "");
-        
+
         bByLex.build(new ArrayList<String>(Arrays.asList("Hi", "Aloha", 
                 "Bonjour", "Wilkommen", "Jambo", "Bienvenido", "Nieho")));
-        
+
         //sorted, comma separated string representation without trailing commas
         t.checkExpect(bByLex.toString(),
                 "Aloha, Bienvenido, Bonjour, Hi, Jambo, Nieho, Wilkommen");
-        
-        
+
+
         t.checkExpect(bByLen.toString(), "");
         bByLen.build(new ArrayList<String>(
                 Arrays.asList("Hello", "Aloha", "Goodbye")));
-        
+
         //duplicates are ignored
         t.checkExpect(bByLen.toString(), "Hello, Goodbye");
     }
-    
+
     /**EFFECT:
      * Method tests whether the equals method for BTree returns the
      * correct evaluation of 2 BTree's
@@ -198,35 +233,35 @@ public class ExamplesBTree {
         t.checkExpect(bByLex.equals(bByLen), false);
         t.checkExpect(bByLex.equals(bByLex), true);
         t.checkExpect(bByLex.equals(bByLex2), true);
-        
+
         bByLex.build(lexIter, 100);
         bByLex2.build(lexIter, 10);
-        
+
         //BTrees with different data are different
         t.checkExpect(bByLex.equals(bByLex2), false);
-        
+
         reset();
         t.checkExpect(bByLex.equals(bByLex), true);
         t.checkExpect(bByLex.equals(bByLex2), true);
-        
+
         ArrayList<String> arList = 
                 new ArrayList<String>(
                         Arrays.asList("hi", "bye", "whattup", "goodbye")); 
         ArrayList<String> arListBackwards = 
                 new ArrayList<String>(
                         Arrays.asList("goodbye", "whattup", "bye", "hi"));
-        
+
         //the two trees will end up with the same data, but different structs
         bByLex.build(arList);
         bByLex2.build(arListBackwards);
-        
+
         //BTrees with the same data but different structure are different
         t.checkExpect(bByLex.equals(bByLex2), false);
-        
+
         //However BTrees with the same data have the same string representation
         t.checkExpect(bByLex.toString().equals(bByLex2.toString()), true);
     }
-    
+
     /**EFFECT:
      * Method tests whether the hashCode method for BTree exhibits the
      * correct behavior
@@ -237,13 +272,13 @@ public class ExamplesBTree {
         reset();
         t.checkExpect(bByLex.hashCode(), bByLex2.hashCode());
         t.checkExpect(bByLex.hashCode() == bByLen.hashCode(), false);
-    
+
         bByLex.build(lexIter, 100);
         bByLex2.build(lexIter, 10);
-        
+
         //BTrees with different data have different hashCodes
         t.checkExpect(bByLex.hashCode() == bByLex2.hashCode(), false);
-        
+
         reset();
         t.checkExpect(bByLex.hashCode(), bByLex2.hashCode());
         ArrayList<String> arList = 
@@ -254,11 +289,11 @@ public class ExamplesBTree {
                         Arrays.asList("goodbye", "whattup", "bye", "hi"));
         bByLex.build(arList);
         bByLex2.build(arListBackwards);
-        
+
         //BTrees with the same data but different structures
         //have different hashes
         t.checkExpect(bByLex.equals(bByLex2), false);
-        
+
         reset();
         bByLex.build(arList);
         bByLex2.build(arList);
@@ -266,7 +301,7 @@ public class ExamplesBTree {
         //hash codes
         t.checkExpect(bByLex.hashCode(), bByLex2.hashCode());
     }
-    
+
     /**EFFECT:
      * Method tests whether the iterator method for BTree returns an
      * iterator which exhibits the right behavior
@@ -276,33 +311,33 @@ public class ExamplesBTree {
         reset();
         Iterator<String> bByLexIter = bByLex.iterator(); 
         t.checkExpect(bByLexIter.hasNext(), false);
-        
+
         //can't call next on empty iterator
         t.checkException(new NoSuchElementException(), bByLexIter, "next");
         bByLex.build(lexIter, 100);
         Iterator<String> bByLexIter2 = bByLex.iterator();
-        
+
         //old iterator has not been updated but the new one has
         t.checkExpect(bByLexIter.hasNext(), false);
         t.checkExpect(bByLexIter2.hasNext(), true);
-        
+
         //each call to next advances the iterator
         t.checkExpect(bByLexIter2.next() == bByLexIter2.next(), false);
-        
+
         //cannot modify this BTree while iterating over it
         t.checkException(new ConcurrentModificationException(), 
                 bByLex, "build", randIter);
-        
+
         //cannot remove from this iterator
         t.checkException(new UnsupportedOperationException(
                 "Remove is not supported by this iterator."), 
-                    bByLexIter2, "remove");
-        
+                bByLexIter2, "remove");
+
         //empty the iterator
         while (bByLexIter2.hasNext()) {
             bByLexIter2.next();
         }
-        
+
         //show that once the iterator is exhausted, we can 
         //add to the BTree once more
         t.checkExpect(bByLexIter2.hasNext(), false);
@@ -310,7 +345,7 @@ public class ExamplesBTree {
         bByLex.build(randIter);
         t.checkExpect(bByLex.contains("chromatograms"), true);
     }
-    
+
     /**EFFECT
      * Test the representation invariants
      * @param t <code>Tester</code>

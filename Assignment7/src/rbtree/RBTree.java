@@ -1,5 +1,6 @@
 package rbtree;
 
+
 import java.util.Comparator;
 
 /**
@@ -103,13 +104,13 @@ public abstract class RBTree<T> {
      * returns the number of strings stored in this RBTree
      * @return <code>int</code>
      */
-    protected abstract int count();
+    public abstract int count();
 
     /**EFFECT:
      * Returns the size of the maximum length path from root to node
      * @return <code>int</code>
      */
-    protected abstract int height();
+    public abstract int height();
 
     /**EFFECT:
      * returns the count of black nodes in the path from root to node
@@ -117,7 +118,7 @@ public abstract class RBTree<T> {
      * should be exactly equal to max black count
      * @return <code>int</code>
      */
-    protected abstract int maxBlackCount();
+    public abstract int maxBlackCount();
 
 
     /**EFFECT:
@@ -126,7 +127,7 @@ public abstract class RBTree<T> {
      * should be exactly equal to min black count
      * @return <code>int</code>
      */
-    protected abstract int minBlackCount();
+    public abstract int minBlackCount();
 
     /**EFFECT:
      * Determines whether this object is a valid representation of a RBTree

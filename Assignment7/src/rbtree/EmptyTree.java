@@ -1,5 +1,6 @@
 package rbtree;
 
+
 import java.util.Comparator;
 
 
@@ -189,7 +190,7 @@ public class EmptyTree<T> extends RBTree<T> {
      * Empty Trees has no elements, return 0
      * @return int
      */
-    protected int count() {
+    public int count() {
         return 0;
     }
 
@@ -197,7 +198,7 @@ public class EmptyTree<T> extends RBTree<T> {
      * Empty Trees have no elements, return 0
      * @return int
      */
-    protected int height() {
+    public int height() {
         return 0;
     }
 
@@ -205,7 +206,7 @@ public class EmptyTree<T> extends RBTree<T> {
      * Empty Trees have no path from root to node, return 0
      * @return RBTree
      */
-    protected int maxBlackCount() {
+    public int maxBlackCount() {
         return 0;
     }
 
@@ -213,7 +214,7 @@ public class EmptyTree<T> extends RBTree<T> {
      * Empty Trees have no path from root to node, return 0
      * @return RBTree
      */
-    protected int minBlackCount() {
+    public int minBlackCount() {
         return 0;
     }
 

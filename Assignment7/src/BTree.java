@@ -2,6 +2,7 @@ import java.util.*;
 
 import rbtree.RBTree;
 import rbtree.EmptyTree;
+import rbtree.RBTreeVisitor;
 
 /**
  * 1. James McNamara
@@ -142,6 +143,18 @@ public class BTree<T> implements Iterable<T> {
     }
 
     /**
+     * Method that accepts a visitor that produces a value of the type R
+     * *param v the given visitor
+     * *param <R> the type of elements this tree holds
+     * *return the result of the visitor method
+     */
+    public <R> R accept(RBTreeVisitor<T, R> v){
+        //NOTE: tree is the name of my RBTree field. You would replace tree 
+        // with the name of your RBTree field.
+        return tree.accept(v); 
+    }
+    
+    /**
      * Effect:
      * Checks to see if this BTree contains s
      * @param s <code>String</code> to look for in this
@@ -233,14 +246,18 @@ public class BTree<T> implements Iterable<T> {
     private class BTreeGen implements Iterator<T> {
 
         private RBTree<T> treeToIter;
-
-        private boolean incremented;
+        
         /**
          * Constructor
          */
         private BTreeGen() {
-            incremented = false;
             treeToIter = tree;
+            
+            //if this iterator has the potential to run,
+            //increment this tree's active iterator count
+            if (hasNext()) {
+                active = active + 1;
+            }
         }
 
         /**
@@ -257,11 +274,7 @@ public class BTree<T> implements Iterable<T> {
          */
         public T next() {
             if (hasNext()) {
-                //Before you begin iterating, ensure you've incremented
-                //the active iterator count
-                incActive();
-
-                T t= treeToIter.getFirst();
+                 T t= treeToIter.getFirst();
                 treeToIter = treeToIter.getRest();
                 //If we are now at the end of the iterator, ensure that
                 //the number of active iterators is decremented 
@@ -275,19 +288,7 @@ public class BTree<T> implements Iterable<T> {
                 throw new NoSuchElementException();
             }
         }
-
-        /** EFFECT:
-         * When this iterator's next method is first successfully invoked,
-         * increment the number of active iterators running on this 
-         * BTree and mark that this Iterator has incremented
-         */
-        private void incActive() {
-            if (!incremented) {
-                incremented = true;
-                active = active + 1;
-            }
-        }
-
+        
         /**
          * Throws an Unsupported Operation Exception
          * remove not supported by this iterator

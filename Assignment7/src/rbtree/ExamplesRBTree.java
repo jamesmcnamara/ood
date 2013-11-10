@@ -25,12 +25,15 @@ public class ExamplesRBTree  {
     Comparator<String> lexComp = new StringByLex();
     /** Lexicographic Comparator */
     Comparator<String> lenComp = new StringByLength();
+    /** Integer Comparator */
+    Comparator<Integer> intComp = new IntBySize();
     
     /** Empty Tree */
    RBTree<String> lexTree = new EmptyTree<String>(lexComp);
     /** Empty Tree */
    RBTree<String> lenTree = new EmptyTree<String>(lenComp);
-
+   /**Empty Tree */
+   RBTree<Integer> intTree = new EmptyTree<Integer>(intComp);
 
     /**MODIFIES:
      * builds LexTree into a lexicographically sorted RBTree 
@@ -49,6 +52,12 @@ public class ExamplesRBTree  {
             lenTree = lenTree.add(s);
         }
     }
+    
+    void initSize() {
+        for(int i = 1; i < 50; i = i + 1) {
+            intTree = intTree.add(((i * 23) / 6) % 250);
+        }   
+    }
 
     /**MODIFIES:
      * LexTree and LenTree into Empty Trees
@@ -56,6 +65,7 @@ public class ExamplesRBTree  {
     void reset() {
         lexTree = EmptyTree.emptyFactory(lexComp);
         lenTree = EmptyTree.emptyFactory(lenComp);
+        intTree = EmptyTree.emptyFactory(intComp);
     }
 
     /**EFFECT:
@@ -70,6 +80,8 @@ public class ExamplesRBTree  {
         t.checkExpect(lexTree.equals(lenTree), false);
         t.checkExpect(lexTree.equals(false), false);
         RBTree<String> b = lexTree;
+        RBTree<Integer> i = intTree;
+        t.checkExpect(intTree.equals(i), true);
         t.checkExpect(b.equals(lexTree), true);
         t.checkExpect(b.equals(false), false);
         initLex();
@@ -116,6 +128,7 @@ public class ExamplesRBTree  {
         //ensure that the insert method uses the given comparator
         //to build the tree
         reset();
+        initSize();
         t.checkExpect(lenTree.isEmpty(), true);
         lenTree = lenTree.insert("hello");
         lenTree = lenTree.insert("gutentag");
@@ -127,6 +140,9 @@ public class ExamplesRBTree  {
         t.checkExpect(lenTree.getRight().contains("gutentag"), true);
         t.checkExpect(lenTree.getLeft().contains("hello"), false);
         t.checkExpect(lenTree.red, true);
+        t.checkExpect(intTree.getValue(), 61);
+        t.checkExpect(intTree.getLeft().getValue() < intTree.getValue(), 
+                    true);
     }
     /**EFFECT:
      * tests the Add method of the red black tree
@@ -160,15 +176,19 @@ public class ExamplesRBTree  {
      */
     void testContains(Tester t) {
         reset();
+        
+        //test that the tree contains nothing at inception
         t.checkExpect(lexTree.isEmpty(), true);
         t.checkExpect(lexTree.contains("hello"), false);
         t.checkExpect(lexTree.contains("salut"), false);
         t.checkExpect(lexTree.contains("aloha"), false);
+        t.checkExpect(intTree.contains(5), false);
         lexTree = lexTree.add("hello");
         lexTree = lexTree.add("salut");
         lexTree = lexTree.add("aloha");
         t.checkExpect(lexTree.contains("hello"), true);
         t.checkExpect(lexTree.contains("hi"), false);
+        
         //test that the strings are being put in the right spot
         t.checkExpect(lexTree.getLeft().contains("aloha"), true);
         t.checkExpect(lexTree.getRight().contains("salut"), true);
@@ -194,11 +214,13 @@ public class ExamplesRBTree  {
         reset();
         t.checkExpect(lexTree.count(), 0);
         initLex();
+        initSize();
         t.checkExpect(lexTree.count(), 26);
         t.checkExpect(lexTree.getLeft().count(), 10);
         t.checkExpect(lexTree.getRight().count(), 15);
         t.checkExpect(lexTree.getRight().getLeft().count(), 5);
         t.checkExpect(lexTree.getRight().getRight().count(), 9);
+        t.checkExpect(intTree.count(), 50);
     }
 
     /**EFFECT:

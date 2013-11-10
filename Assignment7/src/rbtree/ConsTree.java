@@ -1,5 +1,6 @@
 package rbtree;
 
+
 import java.util.Comparator;
 
 
@@ -394,7 +395,7 @@ public class ConsTree<T> extends RBTree<T> {
      * Returns the number of strings in this tree
      * @return <code>int</code>
      */
-    protected int count() {
+    public int count() {
         return 1 + myLeft.count() + myRight.count();
     }
 
@@ -404,7 +405,7 @@ public class ConsTree<T> extends RBTree<T> {
      * on the order of lg n
      * @return <code>int</code>
      */
-    protected int height() {
+    public int height() {
         return 1 + Math.max(myLeft.height(), myRight.height());
     }
 
@@ -414,7 +415,7 @@ public class ConsTree<T> extends RBTree<T> {
      * Should be equivalent to the path which has the least black nodes
      * @return <code>int</code>
      */
-    protected int maxBlackCount() {
+    public int maxBlackCount() {
         if (red) {
             return Math.max(myLeft.maxBlackCount(), 
                     myRight.maxBlackCount());
@@ -430,7 +431,7 @@ public class ConsTree<T> extends RBTree<T> {
      * Should be equivalent to the path which has the most black nodes
      * @return <code>int</code>
      */
-    protected int minBlackCount() {
+    public int minBlackCount() {
         if (red) {
             return Math.min(myLeft.minBlackCount(), 
                     myRight.minBlackCount());
