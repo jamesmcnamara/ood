@@ -1,0 +1,31 @@
+Movies
+The Life Aquatic:140
+RockNRolla:180
+Pulp Fiction:210
+12 Angry Men:150
+Ghosbusters:110
+City Of God:220
+Raiders of the Lost Ark:150
+Fantasia:190
+Theaters
+1:300
+2:150
+3:140
+4:250
+5:10
+Shows
+1,1,625
+2,2,915
+3,3,625
+1,2,525
+4,5,325
+5,4,425
+6,3,1000
+7,4,845
+8,5,775
+8,1,780
+Prices
+Adult:10
+Child:6
+Senior:8
+End
